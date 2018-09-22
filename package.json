@@ -1,0 +1,35 @@
+{
+  "name": "solutionandexperience",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "server.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "mongoose": "^5.2.17",
+    "nodemon": "^1.18.4",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "react-scripts": "^1.1.5",
+    "validator": "^10.7.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surajkrishna/solutionandexperience.git"
+  },
+  "author": "Suraj Krishna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/surajkrishna/solutionandexperience/issues"
+  },
+  "homepage": "https://github.com/surajkrishna/solutionandexperience#readme"
+}
