@@ -6,11 +6,11 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = token => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
-    userId: userId
+    userId: token.name
   };
 };
 
@@ -43,12 +43,10 @@ export const checkAuthTimeout = expirationTime => {
   };
 };
 
-export const auth = (email, password, isSignup) => {
+export const auth = userdata => {
   return {
     type: actionTypes.AUTH_USER,
-    email: email,
-    password: password,
-    isSignup: isSignup
+    payload: userdata
   };
 };
 

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classname from "classname";
 import { connect } from "react-redux";
-import * as actions from "../../store/actions/index";
+import * as actions from "../../../store/actions";
+import Loading from "../../UI/Loading/Loading";
 
 class Register extends Component {
   constructor() {
@@ -36,13 +38,18 @@ class Register extends Component {
   };
   render() {
     const { errors } = this.state;
+    //if (this.props.loading) {
+    const spinner = <Loading />;
+    //}
     return (
-      <div>
+      <div className="Register">
+        {spinner}
         <div className="register">
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Sign Up</h1>
+                {this.props.auth.user ? this.props.auth.user.name : ""}
                 <p className="lead text-center">
                   Create your DevConnector account
                 </p>
@@ -125,9 +132,15 @@ class Register extends Component {
   }
 }
 
+Register.propTypes = {
+  auth: PropTypes.object.isRequired,
+  onAuth: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => {
   return {
-    auth: state.auth
+    auth: state.auth,
+    loading: state.auth.loading
   };
 };
 
