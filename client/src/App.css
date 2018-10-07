@@ -2,7 +2,7 @@ img {
   width: 100%;
 }
 
-.landing {
+.Landing {
   position: relative;
   background: url("./img/showcase.jpg") no-repeat;
   background-size: cover;
@@ -12,11 +12,11 @@ img {
   margin-bottom: -50px;
 }
 
-.landing-inner {
+.landingInnter {
   padding-top: 80px;
 }
 
-.dark-overlay {
+.darkOverlay {
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
   top: 0;
@@ -25,15 +25,15 @@ img {
   height: 100%;
 }
 
-.card-form {
+.cardForm {
   opacity: 0.9;
 }
 
-.latest-profiles-img {
+.latestProfilesImg {
   width: 40px;
   height: 40px;
 }
 
-.form-control::placeholder {
+.formControl::placeholder {
   color: #bbb !important;
 }

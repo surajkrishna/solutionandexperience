@@ -1,9 +1,9 @@
 import React from "react";
-import "./Loading.css";
+import classes from "./Loading.css";
 
 const Loading = () => (
-  <div className="Loading">
-    <div className="Overlay" />
+  <div className={classes.Loading}>
+    <div className={classes.Overlay} />
     <svg
       className="lds-message"
       width="99px"

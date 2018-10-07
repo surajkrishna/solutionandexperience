@@ -7,5 +7,9 @@ export {
   authStart,
   authSuccess,
   authFail,
-  checkAuthTimeout
+  checkAuthTimeout,
+  setCurrentUser,
+  loginUserStart
 } from "./auth";
+
+export { startLoader, stopLoader } from "./utility";

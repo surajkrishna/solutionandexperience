@@ -1,10 +1,5 @@
 import * as actionTypes from "./actionTypes";
-
-export const authStart = () => {
-  return {
-    type: actionTypes.AUTH_START
-  };
-};
+import setAuthToken from "../../utility/setAuthToken";
 
 export const authSuccess = token => {
   return {
@@ -14,19 +9,23 @@ export const authSuccess = token => {
   };
 };
 
-export const authFail = error => {
+export const authFail = errors => {
   return {
-    type: actionTypes.AUTH_FAIL,
-    error: error
+    type: actionTypes.GET_ERRORS,
+    errors: errors
   };
 };
 
 export const logout = () => {
-  // localStorage.removeItem('token');
-  // localStorage.removeItem('expirationDate');
-  // localStorage.removeItem('userId');
+  // Remove item from local storage
+  localStorage.removeItem("jwtToken");
+
+  // Remove auth header from future requests
+  setAuthToken(false);
+
+  // Set current user to {} which will set isAuthenticated to false
   return {
-    type: actionTypes.AUTH_INITIATE_LOGOUT
+    type: actionTypes.SET_CURRENT_USER
   };
 };
 
@@ -60,5 +59,19 @@ export const setAuthRedirectPath = path => {
 export const authCheckState = () => {
   return {
     type: actionTypes.AUTH_CHECK_STATE
+  };
+};
+
+export const setCurrentUser = decoded => {
+  return {
+    type: actionTypes.SET_CURRENT_USER,
+    payload: decoded
+  };
+};
+
+export const loginUserStart = userLoginData => {
+  return {
+    type: actionTypes.START_USER_LOGIN,
+    payload: userLoginData
   };
 };

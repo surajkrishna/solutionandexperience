@@ -6,8 +6,13 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import createSagaMiddleware from "redux-saga";
 import authReducer from "./store/reducers/auth";
-import { watchAuth } from "./store/sagas";
+import errorReducer from "./store/reducers/errors";
+import lodingReducer from "./store/reducers/loading";
+import { watchAuth, watchLogin } from "./store/sagas";
 import registerServiceWorker from "./registerServiceWorker";
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utility/setAuthToken";
+import * as actionTypes from "./store/actions";
 
 const composeEnhancers =
   process.env.NODE_ENV === "development"
@@ -15,7 +20,9 @@ const composeEnhancers =
     : null || compose;
 
 const rootReducer = combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  errors_obj: errorReducer,
+  loadingState: lodingReducer
 });
 
 const sagaMiddleware = createSagaMiddleware();
@@ -25,7 +32,19 @@ const store = createStore(
   composeEnhancers(applyMiddleware(sagaMiddleware))
 );
 
+if (localStorage.jwtToken) {
+  // Set auth token header auth
+  setAuthToken(localStorage.jwtToken);
+
+  // Decode token and get user info and exp
+  const decoded = jwt_decode(localStorage.jwtToken);
+
+  // Set user and isAuthenticated
+  store.dispatch(actionTypes.setCurrentUser(decoded));
+}
+
 sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchLogin);
 
 ReactDOM.render(
   <Provider store={store}>

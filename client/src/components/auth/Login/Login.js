@@ -1,26 +1,19 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import classname from "classname";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import Loading from "../../UI/Loading/Loading";
-import styles from "./Register.css";
+import PropTypes from "prop-types";
 
-class Register extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
-      name: "",
       email: "",
       password: "",
-      password2: "",
       errors: {}
     };
   }
-
-  onChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
@@ -29,66 +22,44 @@ class Register extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      Object.keys(nextProps.errors).length &&
-      nextProps.errors !== this.state.errors
-    ) {
+    if (nextProps.errors && nextProps.errors !== this.state.errors) {
       this.setState({ errors: nextProps.errors });
     }
-    if (Object.keys(nextProps.auth).length !== 0) {
-      this.props.history.push("/login");
+
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
     }
   }
 
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   onSubmit = e => {
     e.preventDefault();
-    const _this = this;
-    const newUser = {
-      name: this.state.name,
+
+    const newLogin = {
       email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
+      password: this.state.password
     };
-    _this.props.onAuth(newUser);
-    // axios
-    // .post("/api/users/register", newUser)
-    // .then(res => console.log(res.data))
-    // .catch(err => _this.setState({ errors: err.response.data }));
+
+    this.props.loginUser(newLogin);
+    //console.log(newLogin);
   };
   render() {
     const { errors } = this.state;
 
-    //if (this.props.loading) {
-    const spinner = this.props.loading ? <Loading /> : null;
-    //}
     return (
-      <div className={styles.Register}>
-        {spinner}
-        <div className="register">
+      <div>
+        <div className="login">
           <div className="container">
             <div className="row">
               <div className="col-md-8 m-auto">
-                <h1 className="display-4 text-center">Sign Up</h1>
-                {this.props.auth.user ? this.props.auth.user.name : ""}
+                <h1 className="display-4 text-center">Log In</h1>
                 <p className="lead text-center">
-                  Create your DevConnector account
+                  Sign in to your DevConnector account
                 </p>
                 <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      className={classname("form-control form-control-lg", {
-                        "is-invalid": errors.name
-                      })}
-                      placeholder="Name"
-                      name="name"
-                      value={this.state.name}
-                      onChange={this.onChange}
-                    />
-                    {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )}
-                  </div>
                   <div className="form-group">
                     <input
                       type="email"
@@ -103,10 +74,6 @@ class Register extends Component {
                     {errors.email && (
                       <div className="invalid-feedback">{errors.email}</div>
                     )}
-                    <small className="form-text text-muted">
-                      This site uses Gravatar so if you want a profile image,
-                      use a Gravatar email
-                    </small>
                   </div>
                   <div className="form-group">
                     <input
@@ -123,21 +90,6 @@ class Register extends Component {
                       <div className="invalid-feedback">{errors.password}</div>
                     )}
                   </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className={classname("form-control form-control-lg", {
-                        "is-invalid": errors.password2
-                      })}
-                      placeholder="Confirm Password"
-                      name="password2"
-                      value={this.state.password2}
-                      onChange={this.onChange}
-                    />
-                    {errors.password2 && (
-                      <div className="invalid-feedback">{errors.password2}</div>
-                    )}
-                  </div>
                   <input
                     type="submit"
                     className="btn btn-info btn-block mt-4"
@@ -152,9 +104,11 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {
+Login.propTypes = {
   auth: PropTypes.object.isRequired,
-  onAuth: PropTypes.func.isRequired
+  loading: PropTypes.bool.isRequired,
+  errors: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => {
@@ -167,11 +121,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: newUser => dispatch(actions.auth(newUser))
+    loginUser: userData => dispatch(actions.loginUserStart(userData))
   };
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Register);
+)(Login);
