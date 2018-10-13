@@ -41,6 +41,17 @@ if (localStorage.jwtToken) {
 
   // Set user and isAuthenticated
   store.dispatch(actionTypes.setCurrentUser(decoded));
+
+  // Check for expired token
+  const currentTime = Date.now * 1000;
+  if (decoded.exp < currentTime) {
+    // Logout user
+    store.dispatch(actionTypes.logout());
+
+    // ToDo: Clear Current Profile
+    // Redirect to login
+    window.location.href = "/login";
+  }
 }
 
 sagaMiddleware.run(watchAuth);

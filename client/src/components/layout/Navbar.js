@@ -3,11 +3,18 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import * as actionTypes from "../../store/actions";
+import { withRouter } from "react-router-dom";
 
 class Navbar extends Component {
   onLogoutClick(e) {
     e.preventDefault();
     this.props.logoutUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.auth.isAuthenticated) {
+      this.props.history.push("/login");
+    }
   }
 
   render() {
@@ -105,4 +112,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Navbar);
+)(withRouter(Navbar));

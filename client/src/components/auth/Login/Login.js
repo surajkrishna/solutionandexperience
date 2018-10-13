@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 import Loading from "../../UI/Loading/Loading";
 import PropTypes from "prop-types";
+import InputFormGroup from "../../common/inputFieldGroup";
+import classes from "./login.css";
 
 class Login extends Component {
   constructor() {
@@ -48,9 +50,12 @@ class Login extends Component {
   };
   render() {
     const { errors } = this.state;
+    // Load Spinner
+    const spinner = this.props.loading ? <Loading /> : null;
 
     return (
-      <div>
+      <div className={classes.Login}>
+        {spinner}
         <div className="login">
           <div className="container">
             <div className="row">
@@ -60,36 +65,28 @@ class Login extends Component {
                   Sign in to your DevConnector account
                 </p>
                 <form onSubmit={this.onSubmit}>
-                  <div className="form-group">
-                    <input
-                      type="email"
-                      className={classname("form-control form-control-lg", {
-                        "is-invalid": errors.email
-                      })}
-                      placeholder="Email Address"
-                      name="email"
-                      value={this.state.email}
-                      onChange={this.onChange}
-                    />
-                    {errors.email && (
-                      <div className="invalid-feedback">{errors.email}</div>
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      className={classname("form-control form-control-lg", {
-                        "is-invalid": errors.password
-                      })}
-                      placeholder="Password"
-                      name="password"
-                      value={this.state.password}
-                      onChange={this.onChange}
-                    />
-                    {errors.password && (
-                      <div className="invalid-feedback">{errors.password}</div>
-                    )}
-                  </div>
+                  <InputFormGroup
+                    type="email"
+                    className={classname("form-control form-control-lg", {
+                      "is-invalid": errors.email
+                    })}
+                    placeholder="Email Address"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    errors={errors.email}
+                  />
+                  <InputFormGroup
+                    type="password"
+                    className={classname("form-control form-control-lg", {
+                      "is-invalid": errors.password
+                    })}
+                    placeholder="Password"
+                    name="password"
+                    value={this.state.password}
+                    onChange={this.onChange}
+                    errors={errors.password}
+                  />
                   <input
                     type="submit"
                     className="btn btn-info btn-block mt-4"
