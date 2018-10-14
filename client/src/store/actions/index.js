@@ -13,3 +13,10 @@ export {
 } from "./auth";
 
 export { startLoader, stopLoader } from "./utility";
+
+export {
+  getCurrentProfile,
+  getProfileError,
+  getProfile,
+  clearCurrentProfile
+} from "./profileActions";

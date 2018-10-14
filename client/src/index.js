@@ -3,27 +3,20 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import createSagaMiddleware from "redux-saga";
-import authReducer from "./store/reducers/auth";
-import errorReducer from "./store/reducers/errors";
-import lodingReducer from "./store/reducers/loading";
-import { watchAuth, watchLogin } from "./store/sagas";
+
+import { watchAuth, watchLogin, watchProfile } from "./store/sagas";
 import registerServiceWorker from "./registerServiceWorker";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utility/setAuthToken";
 import * as actionTypes from "./store/actions";
+import rootReducer from "./store/reducers";
 
 const composeEnhancers =
   process.env.NODE_ENV === "development"
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : null || compose;
-
-const rootReducer = combineReducers({
-  auth: authReducer,
-  errors_obj: errorReducer,
-  loadingState: lodingReducer
-});
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -49,6 +42,8 @@ if (localStorage.jwtToken) {
     store.dispatch(actionTypes.logout());
 
     // ToDo: Clear Current Profile
+    store.dispatch(actionTypes.clearCurrentProfile());
+
     // Redirect to login
     window.location.href = "/login";
   }
@@ -56,6 +51,7 @@ if (localStorage.jwtToken) {
 
 sagaMiddleware.run(watchAuth);
 sagaMiddleware.run(watchLogin);
+sagaMiddleware.run(watchProfile);
 
 ReactDOM.render(
   <Provider store={store}>
